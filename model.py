@@ -24,9 +24,9 @@ class User(db.Model):
     zipcode = db.Column(db.String(15), nullable=True)
 
     def __repr__(self):
-    """Provide helpful representation when printed."""
+        """Provide helpful representation when printed."""
 
-    return f"<User user_id={self.user_id} email={self.email}>"
+        return f"<User user_id={self.user_id} email={self.email}>"
 
 
 # Put your Movie and Rating model classes here.
