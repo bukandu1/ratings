@@ -47,12 +47,29 @@ def load_movies():
     # Read u.item file and insert data
     for row in open("seed_data/u.item"):
         row = row.rstrip()
-        (movie_id, title, release_dt, video_release_dt, imdb_url, gn_unknown, 
+        (movie_id, title, release_dt, video_released_dt, imdb_url, gn_unknown, 
          gn_action, gn_adventure, gn_animation, gn_childrens, gn_comedy, 
          gn_crime, gn_documentary, gn_drama, gn_fantasy, gn_film_noir, 
          gn_horror, gn_musical, gn_mystery, gn_romance, gn_scifi, gn_thriller,
          gn_war, gn_western) = row.split('|')
-        print(movie_id)
+
+        # Strip trailing date from movie title
+        title = title[:-6]
+
+        # Reformat release date as datetime object
+        released_at = datetime.strptime(release_dt, "%d-%b-%Y")
+
+        # Create movie object
+        movie = Movie(movie_id=movie_id,
+                      title=title,
+                      released_at=released_at,
+                      imdb_url=imdb_url)
+
+        # Add each movie to session to be stored
+        db.session.add(movie)
+
+    # Commit added movies to session
+    db.session.commit()
 
 def load_ratings():
     """Load ratings from u.data into database."""
