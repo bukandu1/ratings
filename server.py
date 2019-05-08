@@ -38,6 +38,26 @@ def reg_page():
 
     return render_template('reg-form.html')
 
+@app.route('/register', methods=["POST"])
+def reg_process():
+    """Process registration and redirect to homepage."""
+
+    # Retrieve variables from form and set to variables
+    user_email = request.form.get("email")
+    user_pswd = request.form.get("password")
+
+    # Try to get user from db, create user if not in db
+    try:
+        user_obj = User.query.filter_by(email=user_email, 
+                                        password=user_pswd).one()
+    except:
+        user_obj = User(email=user_email, password=user_pswd)
+        db.session.add(user_obj)
+        db.session.commit()
+
+    # Redirect to homepage
+    return redirect("/")
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
