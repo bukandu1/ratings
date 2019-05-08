@@ -54,7 +54,7 @@ def load_movies():
          gn_war, gn_western) = row.split('|')
 
         # Strip trailing date from movie title
-        title = title[:-6]
+        title = title[:-7]
 
         # Reformat release date as datetime object
         released_at = datetime.strptime(release_dt, "%d-%b-%Y")
