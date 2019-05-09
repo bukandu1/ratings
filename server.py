@@ -32,6 +32,17 @@ def user_list():
     users = User.query.all()
     return render_template('user_list.html', users=users)
 
+@app.route('/users/<user_id>')
+def user_info(user_id):
+    """Show user info"""
+
+    #Get/query user object with user id
+    user = User.query.get(user_id)
+    print(user)
+
+    #Send particular attributes to template
+    return render_template('user-details.html', user=user)
+
 @app.route('/register', methods=["GET"])
 def reg_page():
     """Send to reg page """
@@ -80,7 +91,12 @@ def login_process():
         flash("Uh oh! Password/email address is incorrect. It's okay...you can try again")
         return redirect("/login")
 
-
+@app.route('/logout')
+def logout():
+   # remove the username from the session if it is there
+   session.pop('user_id', None)
+   flash("You're logged out. Cool.")
+   return redirect("/")
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
