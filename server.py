@@ -38,7 +38,6 @@ def user_info(user_id):
 
     #Get/query user object with user id
     user = User.query.get(user_id)
-    print(user)
 
     #Send particular attributes to template
     return render_template('user-details.html', user=user)
@@ -85,7 +84,8 @@ def login_process():
         user_obj = User.query.filter_by(email=user_email, password=password).one()
         session['user_id'] = user_obj.user_id
         flash("Good job! You're logged in!!!")
-        return redirect("/")
+        url = "/users/" + str(session['user_id'])
+        return redirect(url)
         
     except:
         flash("Uh oh! Password/email address is incorrect. It's okay...you can try again")
