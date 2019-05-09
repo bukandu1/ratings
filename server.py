@@ -58,6 +58,28 @@ def reg_process():
     # Redirect to homepage
     return redirect("/")
 
+@app.route("/login")
+def login():
+    return render_template('login-page.html')
+
+@app.route("/login-process", methods=["POST"])
+def login_process():
+    #retrieve email and password from login-form
+    user_email = request.form.get("email")
+    password = request.form.get("password")
+
+    try:
+        #check to see if user in db by email 
+        #if password matches, query database, retrieve user id and add to session
+        user_obj = User.query.filter_by(email=user_email, password=password).one()
+        session['user_id'] = user_obj.user_id
+        return redirect("/")
+        
+    except:
+        return redirect("/login")
+
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
