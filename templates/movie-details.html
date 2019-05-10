@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <h2><u>Movie Details</u></h2>
+
+  Title: {{ movie.title }} <br>
+  Release Date: {{ movie.released_at }}
+  <form action="/rating/{{ movie.movie_id }}" method="POST">
+    Please rate or update rating: <input type="text" name="rating">
+    <!-- In the future, this should be a dropdown w/ values
+    from 1 to 5 to account for user error -->
+    <input type="submit" name="submit">
+  </form>
+
+  <ul>
+    {% for rating in movie.ratings %}
+      <li>
+          <b>Score</b>: {{rating.score}}
+      </li>
+    {% endfor %}
+
+
+  </ul>
+
+{% endblock %}
