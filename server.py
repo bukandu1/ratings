@@ -47,7 +47,6 @@ def process_rating(movie_id):
     
     #Retrieve the rating from form
     rating = request.form.get("rating")
-    print("hey I'm the rating from the form\n\n\n\n\n\n\n", rating)
 
     #If rating in database, update. Else create a new rating
     if session.get('user_id'):
@@ -56,21 +55,15 @@ def process_rating(movie_id):
         #Query to see if user has rated movie
         user_rating = Rating.query.filter_by(user_id=user_id, 
                                                 movie_id=movie_id).first()
-        print(user_rating, "*********************************\n\n\n\n\n\n")
 
         #If not NONE, update
         if user_rating:
             #Does exist. Update.
-            print("I'm in the IF statement!!")
             user_rating.score = rating
-            print(user_rating.score)
             db.session.add(user_rating)
-            print(db.session)
             db.session.commit()
         else:
             #Doesnt exist. Add. 
-            print('Im in the ELSE')
-            print(rating)
             db.session.add(Rating(score=rating, movie_id=movie_id, user_id=user_id))
             db.session.commit()
 
@@ -79,10 +72,6 @@ def process_rating(movie_id):
     else:
         flash("You must be logged in to rate a movie.")
         return redirect("/login")
-
-
-
-
 
 @app.route('/movies')
 def movie_list():
@@ -101,11 +90,6 @@ def movie_info(movie_id):
 
     #Send particular attributes to template
     return render_template('movie-details.html', movie=movie)
-
-
-
-
-
 
 @app.route('/register', methods=["GET"])
 def reg_page():
